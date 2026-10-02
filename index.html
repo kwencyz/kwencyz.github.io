@@ -470,9 +470,9 @@ a{color:inherit}
 
 <script>
 /* Fill these in and republish.
-   whatsapp: number with country code, e.g. "60123456789"   instagram: handle without @   email: address
+   whatsapp: number with country code (60…), whatsappShown: how the number is displayed   instagram: handle without @   email: address
    Empty values show as "Coming soon" and their buttons stay hidden. */
-const CONTACT = { whatsapp: "", instagram: "", email: "", based: "Shah Alam, Selangor" };
+const CONTACT = { whatsapp: "601110715733", whatsappShown: "011-1071 5733", instagram: "", email: "haziqruslan27@gmail.com", based: "Shah Alam, Selangor" };
 
 const CATS = { convo: "Convocation", portrait: "Portraits", moments: "Moments" };
 const M6 = "Canon EOS M6", A6 = "Sony a6000";
@@ -653,7 +653,7 @@ function renderTap(){
   const cta = $("lookCta");
   if (cta) { cta.href = waLink || "#book"; if (waLink) { cta.target = "_blank"; cta.rel = "noopener"; } }
 }
-const rows = [["WhatsApp", wa ? "+" + wa : ""], ["Instagram", ig ? "@" + ig : ""], ["Email", CONTACT.email], ["Based in", CONTACT.based]];
+const rows = [["WhatsApp", wa ? (CONTACT.whatsappShown || "+" + wa) : ""], ["Instagram", ig ? "@" + ig : ""], ["Email", CONTACT.email], ["Based in", CONTACT.based]];
 $("rows").innerHTML = rows.map(([k, v], i) => `
   <div class="row"><span class="k cap">${k}</span>
   <span class="v${v ? "" : " pending"}">${v ? `<span id="rv${i}">${v}</span>${k !== "Based in" ? `<button type="button" class="copy" data-copy="rv${i}">Copy</button>` : ""}` : "Coming soon"}</span></div>`).join("");
