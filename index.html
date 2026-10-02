@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Haziq Ruslan Photography</title>
+<meta name="description" content="Convocation, portrait and candid photography in Shah Alam, Selangor. See the work, pick your editing style and book your convocation session.">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Link previews (WhatsApp, Instagram, Facebook, X). After your first push, replace https://USERNAME.github.io/ with your real address. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Haziq Ruslan Photography">
+<meta property="og:title" content="Haziq Ruslan Photography · Convocation &amp; portraits">
+<meta property="og:description" content="You earned the scroll. Now get the photos. Convocation sessions in Shah Alam, Selangor.">
+<meta property="og:url" content="https://USERNAME.github.io/">
+<meta property="og:image" content="https://USERNAME.github.io/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://USERNAME.github.io/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
+<style>
+html,body{margin:0}
+[hidden]{display:none!important}
+/* Layout (mobile-first): hard black/white bands. Dark full-screen hero with masked word reveal + endless photo strip →
+   light stacked word list with inline thumbnails → about → pick-your-look slider → session →
+   (each word opens a full-screen gallery page that slides in, with #slug links and back-button support) →
+   dark booking with tap-to-chat buttons → footer. A bottom "Book" dock follows the thumb on phones.
+   Single committed look, no theme switch. */
+:root{
+  --black:#0A0A0A; --white:#F5F5F5; --grey:#2C2C2C; --mid:#8C8C8C; --rule:#D3D3D3; --soft:#BDBDBD;
+  --gold:#E3B23C;
+  --display:"Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --gut:16px;
+  color-scheme:light;
+}
+@media (min-width:821px){:root{--gut:clamp(16px,2vw,28px)}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{background:var(--white);color:var(--black);font:400 16px/1.55 var(--body);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow-x:clip}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.cap{font-family:var(--display);font-stretch:62%;font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:.86}
+.pad{padding-inline:var(--gut)}
+.dark{background:var(--black);color:var(--white)}
+.light{background:var(--white);color:var(--black)}
+
+/* ---------- motion primitives ---------- */
+/* masked words: .m clips, inner span rises */
+.m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em;margin-bottom:-.06em}
+.m > span{display:inline-block}
+.hero .m > span{animation:rise .9s var(--ease) both;animation-delay:calc(var(--i) * 80ms + 150ms)}
+@keyframes rise{from{transform:translateY(110%)}to{transform:none}}
+.sp .m > span{transition:transform .9s var(--ease);transition-delay:calc(var(--i) * 60ms)}
+.sp.arm .m > span{transform:translateY(110%)}
+/* fade-up blocks */
+.rv{transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.arm{opacity:0;transform:translateY(36px)}
+
+/* ---------- header ---------- */
+.top{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) var(--gut) 12px;mix-blend-mode:difference;color:#fff;pointer-events:none}
+.top a{pointer-events:auto;text-decoration:none}
+.wordmark{font-size:clamp(1.55rem,2.4vw,2rem);animation:fadein .6s .9s both}
+.top nav{display:flex;gap:4px;animation:fadein .6s 1s both}
+.top nav a{font:900 .9rem/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.02em;padding:12px 8px}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* ---------- chip + buttons ---------- */
+.chip{display:inline-block;border:1px solid currentColor;padding:9px 12px 8px;font:900 .82rem/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.02em}
+.dark .chip{border-color:var(--grey)}
+.light .chip{border-color:var(--rule)}
+.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:40px;min-width:210px;min-height:52px;padding:16px 18px;
+  font:900 1rem/1 var(--display);font-stretch:62%;text-transform:uppercase;text-decoration:none;border:0;cursor:pointer;
+  background:var(--black);color:var(--white);transition:background .2s,color .2s,transform .15s}
+.btn svg{width:18px;height:18px;flex:none;transition:transform .25s}
+.btn:hover svg{transform:translateX(4px)}
+.btn:active{transform:scale(.97)}
+.btn.inv{background:var(--white);color:var(--black)}
+.btn.gold{background:var(--gold);color:var(--black)}
+.btn:hover{background:var(--gold);color:var(--black)}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:1fr auto;padding-block:calc(env(safe-area-inset-top,0px) + 76px) 20px;overflow:hidden}
+.hero h1{margin:0;align-self:center;font-size:clamp(3.8rem,18vw,12rem);line-height:.84}
+.hero h1 .ln{display:block}
+.hero h1 i{font-style:italic;color:var(--gold)}
+.hero .sub{display:flex;align-items:center;gap:10px;margin:22px 0 0;font:900 .9rem/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.04em;color:var(--soft);animation:fadein .6s 1s both}
+.hero .sub::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.strip{margin-inline:calc(var(--gut) * -1);margin-block:26px 20px;overflow:hidden;animation:fadein .8s .8s both}
+.track{display:flex;gap:8px;width:max-content;animation:marquee 46s linear infinite}
+.strip:hover .track{animation-play-state:paused}
+.track button{all:unset;cursor:zoom-in;flex:none;height:clamp(170px,30svh,300px);overflow:hidden;background:var(--grey)}
+.track img{height:100%;width:auto;max-width:none;transition:transform .5s var(--ease)}
+.track button:active img{transform:scale(.97)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+.hero-foot{display:grid;gap:16px;border-top:1px solid var(--grey);padding-top:16px;animation:fadein .6s 1.1s both}
+.hero-foot p{margin:0;max-width:34em;color:var(--soft)}
+.hero-foot .btn{width:100%}
+
+/* ---------- stacked word list ---------- */
+.words{padding-block:72px;text-align:center;overflow-x:hidden}
+.words ul{list-style:none;margin:0;padding:0;display:grid;gap:.08em;font-size:clamp(3rem,14.5vw,9.4rem)}
+.words li{display:flex;justify-content:center;align-items:center;gap:.12em;min-width:0}
+.words li:nth-child(even){flex-direction:row-reverse}
+.words li.rv.arm{transform:translateX(-14vw)}
+.words li.rv.arm:nth-child(even){transform:translateX(14vw)}
+.words li .th{transition:transform .9s .15s var(--ease)}
+.words li.arm .th{transform:scale(0) rotate(-8deg)}
+.words button.w{all:unset;cursor:pointer;transition:color .2s;white-space:nowrap;
+  font-family:var(--display);font-stretch:62%;font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:-.005em}
+.words button.w:hover,.words button.w:focus-visible,.words button.w:active{color:var(--gold)}
+.words .th{width:.86em;height:.86em;flex:none;overflow:hidden;background:var(--rule)}
+.words .th img{width:100%;height:100%;object-fit:cover}
+.words .hint{margin:22px 0 0;font:900 .85rem/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.04em;color:var(--mid)}
+.words .why{max-width:30em;margin:56px auto 26px;font-size:clamp(1.08rem,1.6vw,1.3rem);line-height:1.45}
+
+/* ---------- about ---------- */
+.about{display:grid;gap:24px;padding-block:20px 56px;border-top:1px solid var(--rule)}
+.about .txt{display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding-block:4px 8px}
+.about h2{margin:0 0 18px;font-size:clamp(3rem,13vw,5rem);max-width:9em}
+.about p{margin:0;max-width:32em;font-size:1.06rem}
+.about p + p{margin-top:14px;color:#4A4A4A}
+.about figure{margin:0;overflow:hidden}
+.about figure img{width:100%;height:auto}
+
+/* ---------- category gallery page (slides in like a new page) ---------- */
+.words sup{font:900 .2em/1 var(--display);font-stretch:62%;vertical-align:top;margin-left:.15em;color:var(--mid);position:relative;top:.35em}
+.gal{position:fixed;inset:0;z-index:50;background:var(--black);color:var(--white);overflow-y:auto;overscroll-behavior:contain;
+  transform:translateX(100%);visibility:hidden;transition:transform .55s var(--ease),visibility 0s .55s}
+.gal.open{transform:none;visibility:visible;transition:transform .55s var(--ease)}
+.gal-bar{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:calc(env(safe-area-inset-top,0px) + 10px) var(--gut) 10px;background:rgba(10,10,10,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.back{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 16px 0 12px;background:var(--white);color:var(--black);border:0;cursor:pointer;
+  font:900 1rem/1 var(--display);font-stretch:62%;text-transform:uppercase}
+.back svg{width:18px;height:18px}
+.back:active{transform:scale(.97)}
+.gal-bar .cap{font-size:1.1rem;color:var(--soft)}
+.gal-head{padding:28px var(--gut) 24px}
+.gal-head h2{margin:14px 0 0;font-size:clamp(3.6rem,18vw,11rem)}
+.gal-head h2 sup{font-size:.22em;vertical-align:top;margin-left:.12em;color:var(--gold)}
+.gal-head p{margin:16px 0 0;max-width:32em;color:var(--soft)}
+.gal .m > span{animation:none}
+.gal.open .gal-head .m > span{animation:rise .8s var(--ease) both;animation-delay:calc(var(--i) * 80ms + 250ms)}
+.gal-grid{columns:2;column-gap:8px;padding:0 var(--gut)}
+.gi{break-inside:avoid;margin:0 0 8px}
+.gi button{all:unset;cursor:zoom-in;display:block;overflow:hidden;background:var(--grey);max-width:100%}
+.gi img{width:100%;height:auto}
+.gal.open .gi button{animation:unveil .9s var(--ease) both;animation-delay:calc(var(--i) * 70ms + 350ms)}
+.gal.open .gi img{animation:settle 1.2s var(--ease) both;animation-delay:calc(var(--i) * 70ms + 350ms)}
+@keyframes unveil{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0)}}
+@keyframes settle{from{transform:scale(1.2)}to{transform:none}}
+.gi .t{display:block;margin-top:7px;font:900 .9rem/1.05 var(--display);font-stretch:62%;text-transform:uppercase;color:var(--soft)}
+.gal-foot{display:grid;gap:8px;padding:40px var(--gut) calc(env(safe-area-inset-bottom,0px) + 28px)}
+.next{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:end;gap:16px;border-top:1px solid var(--grey);padding-top:16px;margin-bottom:24px}
+.next small{display:block;font:900 .85rem/1 var(--display);font-stretch:62%;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+.next .cap{font-size:clamp(3rem,14vw,7rem)}
+.next svg{width:clamp(32px,8vw,56px);height:auto;flex:none;margin-bottom:.3em}
+.next:active .cap,.next:hover .cap{color:var(--gold)}
+.gal-foot .btn{width:100%}
+.gal-on .dock{transform:translateY(110%)}
+
+/* ---------- pick your look ---------- */
+.looks{padding-block:72px;display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+.looks h2{margin:18px 0 0;font-size:clamp(3.2rem,15vw,7.5rem);max-width:9em}
+.looks .lede{margin:14px 0 0;max-width:30em;color:#4A4A4A}
+.cmp{position:relative;overflow:hidden;background:var(--grey);aspect-ratio:9/16;max-height:82svh;margin-inline:auto;width:100%;
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;--pos:50%}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.cmp .after{clip-path:inset(0 0 0 var(--pos))}
+.cmp .after.swap{animation:swapin .55s var(--ease)}
+@keyframes swapin{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:none}}
+.cmp .bar{position:absolute;top:0;bottom:0;left:var(--pos);width:2px;margin-left:-1px;background:var(--white);pointer-events:none}
+.cmp .knob{position:absolute;top:50%;left:var(--pos);transform:translate(-50%,-50%);width:48px;height:48px;display:grid;place-items:center;
+  background:var(--white);color:var(--black);pointer-events:none;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+.cmp .knob svg{width:22px;height:22px}
+.cmp .tag{position:absolute;bottom:12px;padding:8px 10px 7px;background:var(--black);color:var(--white);font:900 .82rem/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.03em;pointer-events:none;transition:opacity .3s}
+.cmp .tag.l{left:12px}.cmp .tag.r{right:12px;background:var(--gold);color:var(--black)}
+.cmp.same .bar,.cmp.same .knob,.cmp.same .tag.l{opacity:0}
+.cmp.same .bar,.cmp.same .knob{display:none}
+.cmp.same{cursor:default}
+.cmp:focus-within{outline:2px solid var(--gold);outline-offset:3px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.swatches{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--gut) * -1);padding:2px var(--gut) 6px;scroll-snap-type:x proximity}
+.swatches::-webkit-scrollbar{display:none}
+.sw{flex:none;width:96px;padding:0;border:0;background:none;cursor:pointer;text-align:left;scroll-snap-align:start;color:var(--black)}
+.sw .im{display:block;aspect-ratio:3/4;overflow:hidden;outline:2px solid transparent;outline-offset:-2px;transition:outline-color .2s}
+.sw img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;transition:transform .5s var(--ease)}
+.sw .nm{display:block;margin-top:8px;font:900 .92rem/1 var(--display);font-stretch:62%;text-transform:uppercase}
+.sw[aria-pressed="true"] .im{outline-color:var(--black)}
+.sw[aria-pressed="true"] .nm{color:var(--black)}
+.sw[aria-pressed="false"] .nm{color:var(--mid)}
+.sw:active img{transform:scale(.94)}
+.look-info{border-top:1px solid var(--rule);padding-top:18px;display:grid;gap:16px}
+.look-info .nm{font-size:clamp(2.6rem,11vw,4rem)}
+.look-info .kind{font:900 .85rem/1 var(--display);font-stretch:62%;text-transform:uppercase;letter-spacing:.04em;color:var(--mid);margin-bottom:-8px}
+.look-info p{margin:0;max-width:30em;color:#4A4A4A}
+.look-info .btn{width:100%}
+.look-note{font-size:.85rem;color:var(--mid)}
+.picked{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;padding:8px 12px 7px;background:var(--gold);color:var(--black);font:900 .85rem/1 var(--display);font-stretch:62%;text-transform:uppercase}
+
+/* ---------- session ---------- */
+.session{padding-block:72px}
+.session h2{margin:18px 0 36px;font-size:clamp(3.2rem,15vw,7.5rem);max-width:10em}
+.steps{display:grid;border-top:1px solid var(--rule)}
+.step{padding:22px 0 20px;min-width:0}
+.step + .step{border-top:1px solid var(--rule)}
+.step .when{font-size:clamp(2.6rem,11vw,3.8rem);display:block;margin-bottom:12px}
+.step p{margin:0;color:#4A4A4A;max-width:24em}
+.honest{margin-top:40px;display:grid;gap:14px;border:1px solid var(--rule);padding:20px}
+.honest .chip{justify-self:start}
+.honest p{margin:0;max-width:52em}
+
+/* ---------- booking ---------- */
+.book{display:grid;gap:24px;padding-block:20px 0}
+.book .left{display:flex;flex-direction:column;justify-content:space-between;gap:32px;padding-bottom:12px}
+.book h2{margin:24px 0 0;font-size:clamp(5rem,27vw,13rem)}
+.book h2 i{font-style:italic;color:var(--gold)}
+.book p{margin:0 0 20px;max-width:30em;color:var(--soft)}
+.tap{display:grid;gap:8px;margin-bottom:22px}
+.tap .btn{width:100%}
+.rows{border-top:1px solid var(--grey)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;padding-block:10px;border-bottom:1px solid var(--grey)}
+.row .k{font-size:1.05rem}
+.row .v{display:flex;align-items:center;gap:10px;text-align:right;min-width:0;overflow-wrap:anywhere}
+.row .v.pending{color:var(--mid);font-style:italic}
+.copy{flex:none;min-height:36px;padding:0 12px;border:1px solid var(--grey);background:transparent;color:var(--white);font:900 .78rem/1 var(--display);font-stretch:62%;text-transform:uppercase;cursor:pointer}
+.book figure{margin:0 calc(var(--gut) * -1);overflow:hidden}
+.book figure img{width:100%;height:auto}
+
+/* ---------- footer ---------- */
+.foot{padding-block:64px calc(24px + 76px + env(safe-area-inset-bottom,0px))}
+.places{display:flex;flex-wrap:wrap;gap:.08em .35em;font-size:clamp(3.4rem,16vw,8.4rem);margin-bottom:48px}
+.places span:nth-child(even){color:var(--rule)}
+.foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px;border-bottom:1px solid var(--rule);padding-bottom:16px}
+.foot-row .cap{font-size:clamp(2.2rem,9vw,3rem)}
+.foot-row nav{display:grid;text-align:right}
+.foot-row nav a{font:900 1rem/1 var(--display);font-stretch:62%;text-transform:uppercase;text-decoration:none;padding:8px 0}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;padding-top:14px;font-size:.82rem;color:#6B6B6B}
+
+/* ---------- bottom dock (phones) ---------- */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:8px;padding:10px var(--gut) calc(env(safe-area-inset-bottom,0px) + 10px);
+  background:linear-gradient(to top,rgba(10,10,10,.92) 55%,rgba(10,10,10,0));transform:translateY(110%);transition:transform .45s var(--ease)}
+.dock.show{transform:none}
+.dock .btn{flex:1;min-width:0}
+
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:60;background:rgba(10,10,10,.97);color:var(--white);display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) var(--gut) calc(env(safe-area-inset-bottom,0px) + 14px)}
+.lb[hidden]{display:none}
+.lb:not([hidden]) .lb-stage img{animation:pop .45s var(--ease)}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.lb-top{display:flex;justify-content:space-between;align-items:center}
+.lb-top .cap{font-size:1.05rem}
+.lb-stage{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding-block:12px;touch-action:pan-y}
+.lb-stage img{max-width:100%;max-height:100%;object-fit:contain}
+.sq{width:48px;height:48px;display:grid;place-items:center;background:var(--white);color:var(--black);border:0;cursor:pointer;flex:none}
+.sq:hover,.sq:active{background:var(--gold)}
+.sq svg{width:18px;height:18px}
+.lb .side{position:absolute;top:50%;transform:translateY(-50%);display:none}
+.lb .prev{left:0}.lb .next{right:0}
+.lb-cap{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:6px 16px}
+.lb-cap .cap{font-size:clamp(1.5rem,2.6vw,2rem)}
+.lb-cap code{grid-column:1;font:500 .78rem/1.5 var(--body);color:#A8A8A8;letter-spacing:.02em}
+.lb-ctrl{grid-column:2;grid-row:1 / span 2;display:flex;gap:6px}
+
+/* ---------- larger screens ---------- */
+@media (min-width:821px){
+  .hero h1{font-size:clamp(4rem,11.5vw,12rem);text-align:center}
+  .hero .sub{justify-content:center}
+  .hero-foot{grid-template-columns:minmax(0,1fr) auto;align-items:end}
+  .hero-foot .btn{width:auto}
+  .words{padding-block:clamp(72px,10vw,140px)}
+  .words ul{font-size:clamp(3rem,9.6vw,9.4rem)}
+  .about,.book{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,3vw,40px)}
+  .about{padding-block:20px}
+  .about figure img{height:100%;max-height:88vh;object-fit:cover}
+  .book figure{margin:0}
+  .book figure img{height:100%;max-height:92vh;object-fit:cover;object-position:40% 50%}
+  .session{padding-block:clamp(72px,9vw,120px)}
+  .session h2{font-size:clamp(3rem,8vw,7.5rem);margin-bottom:56px}
+  .gal-grid{columns:3;column-gap:12px}
+  .gi{margin-bottom:12px}
+  .gi button:hover img{transform:scale(1.03);transition:transform .6s var(--ease)}
+  .gal-foot{grid-template-columns:minmax(0,1fr) auto;align-items:end}
+  .gal-foot .next{grid-column:1 / -1}
+  .gal-foot .btn{width:auto}
+  .looks{padding-block:clamp(72px,9vw,120px);grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(24px,4vw,64px);align-items:start}
+  .looks .head{grid-column:1 / -1}
+  .looks h2{font-size:clamp(3rem,8vw,7.5rem)}
+  .cmp{grid-row:2 / span 2;max-height:86vh;width:auto;height:min(86vh,1100px);margin:0}
+  .looks .controls{grid-column:2;display:grid;gap:28px;align-content:start}
+  .swatches{flex-wrap:wrap;overflow:visible;margin:0;padding:0}
+  .sw{width:calc((100% - 24px) / 4)}
+  .sw:hover img{transform:scale(1.05)}
+  .look-info .btn{width:auto;justify-self:start}
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .step{padding:22px 20px 8px 0}
+  .step + .step{border-top:0;border-left:1px solid var(--rule);padding-left:20px}
+  .honest{grid-template-columns:auto minmax(0,1fr);gap:16px 24px;align-items:start}
+  .book h2{font-size:clamp(4.4rem,13vw,13rem)}
+  .tap{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot{padding-block:clamp(56px,7vw,96px) 24px}
+  .dock{display:none}
+  .lb .side{display:grid}
+  .lb-ctrl{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .strip{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="cap wordmark" href="#top" aria-label="Haziq Ruslan, back to top">Haziq Ruslan</a>
+  <nav aria-label="Sections"><a href="#work">Work</a><a href="#book">Book</a></nav>
+</header>
+
+<main>
+  <section class="hero dark pad" id="top">
+    <div style="align-self:center">
+      <h1 class="cap" aria-label="You earned the scroll. Now get the photos.">
+        <span class="ln"><span class="m"><span style="--i:0">You</span></span> <span class="m"><span style="--i:1">earned</span></span></span>
+        <span class="ln"><span class="m"><span style="--i:2">the</span></span> <span class="m"><span style="--i:3"><i>scroll.</i></span></span></span>
+        <span class="ln"><span class="m"><span style="--i:4">Now</span></span> <span class="m"><span style="--i:5">get</span></span> <span class="m"><span style="--i:6">the</span></span></span>
+        <span class="ln"><span class="m"><span style="--i:7">photos.</span></span></span>
+      </h1>
+      <p class="sub">Booking convocation season · Shah Alam</p>
+    </div>
+    <div>
+      <div class="strip" aria-label="Featured photos"><div class="track" id="track"></div></div>
+      <div class="hero-foot">
+        <p>Part-time photographer in Shah Alam, Selangor. Convocation, portraits and candid moments, all shot on my own camera.</p>
+        <a class="btn gold" href="#book">Book convocation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="words light pad" id="work" aria-labelledby="whatTitle">
+    <h2 id="whatTitle" class="chip" style="margin:0 0 44px">What I shoot</h2>
+    <ul id="wordList"></ul>
+    <p class="hint">Tap a word to open the gallery</p>
+    <p class="why rv">Every convocation season, thousands of graduates cross the stage in Selangor and most go home with blurry phone photos. Choosing who shoots your day matters. So, why me?</p>
+    <a class="btn rv" href="#about">This is why <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></a>
+  </section>
+
+  <section class="about light pad" id="about">
+    <div class="txt">
+      <span class="chip" style="align-self:start">About</span>
+      <div>
+        <h2 class="cap sp">Candid photos for people who hate posing</h2>
+        <p class="rv">I'm Haziq, a part-time photographer and hobbyist based in Shah Alam. I look for the real moments: the laugh right after the shot, the friend who turns up with flowers, the family photo nobody had to force.</p>
+        <p class="rv">I'm opening my first full convocation sessions this season. Every photo on this page is mine, shot on a Canon EOS M6 and a Sony a6000.</p>
+      </div>
+    </div>
+    <figure class="rv"><button type="button" data-open="p15" style="all:unset;cursor:zoom-in;display:block;height:100%"><img src="img/p15.jpg" width="898" height="1600" alt="Young man in a black tee laughing, palm trees behind him" loading="lazy"></button></figure>
+  </section>
+
+  <section class="looks light pad" id="looks" aria-labelledby="looksTitle">
+    <div class="head">
+      <span class="chip">Pick your look</span>
+      <h2 class="cap sp" id="looksTitle">Same photo. Your edit.</h2>
+      <p class="lede rv">One convocation photo, six of my edits. Tap a style, then drag the slider to see it next to the photo straight out of the camera.</p>
+    </div>
+    <div class="cmp rv" id="cmp">
+      <img src="img/look-natural.jpg" width="900" height="1600" alt="Graduate and friend with bouquets, photo as shot">
+      <img class="after" id="cmpAfter" src="img/look-daydream.jpg" width="720" height="1280" alt="">
+      <div class="bar"></div>
+      <div class="knob" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></div>
+      <span class="tag l">As shot</span><span class="tag r" id="cmpTag">Daydream</span>
+      <label class="vh" for="cmpRange">Compare the edit with the photo as shot</label>
+      <input class="vh" type="range" id="cmpRange" min="0" max="100" value="50">
+    </div>
+    <div class="controls">
+      <div class="swatches" role="group" aria-label="Editing styles" id="swatches"></div>
+      <div class="look-info rv" aria-live="polite">
+        <span class="kind" id="lookKind">Dreamy edit</span>
+        <span class="cap nm" id="lookName">Daydream</span>
+        <p id="lookDesc"></p>
+        <a class="btn" id="lookCta" href="#book">Book with this look <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></a>
+        <span class="look-note">Can't decide? Mix two, or tell me what you have in mind.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="session light pad" id="session" style="border-top:1px solid var(--rule)">
+    <span class="chip">Convocation sessions</span>
+    <h2 class="cap sp">One day. Three moments worth keeping.</h2>
+    <div class="steps">
+      <div class="step rv"><span class="cap when">Before</span><p>Robes on, family close. Portraits while the light is soft, before the hall gets busy.</p></div>
+      <div class="step rv"><span class="cap when">Right after</span><p>Scroll in hand. The flowers, the hugs, the friends who came to find you. Mostly candid, a few posed.</p></div>
+      <div class="step rv"><span class="cap when">Around campus</span><p>Your faculty, the library, wherever your degree actually happened. Solo shots and the whole group.</p></div>
+    </div>
+    <div class="honest rv">
+      <span class="chip">Straight up</span>
+      <p>I'm new to booking full convocation sessions. The photos here are my real work: portraits, events and the ceremony itself. Rates are on request, and booking early helps me plan the season.</p>
+    </div>
+  </section>
+
+  <section class="book dark pad" id="book">
+    <div class="left">
+      <div>
+        <span class="chip">Get in touch</span>
+        <h2 class="cap sp">Book<br>your<br><i>day.</i></h2>
+      </div>
+      <div>
+        <p>Send me your convocation date, your university and how many people will join. I'll reply with open slots and rates.</p>
+        <div class="tap" id="tap"></div>
+        <div class="rows" id="rows"></div>
+      </div>
+    </div>
+    <figure class="rv"><button type="button" data-open="p08" style="all:unset;cursor:zoom-in;display:block;height:100%"><img src="img/p08.jpg" width="1600" height="1067" alt="Woman in a cream hijab smiling against a dark railing at night" loading="lazy"></button></figure>
+  </section>
+
+  <footer class="foot light pad">
+    <div class="places cap sp" aria-label="Based in Shah Alam, Selangor"><span>Shah Alam</span> <span>Selangor</span> <span>Klang Valley</span></div>
+    <div class="foot-row">
+      <span class="cap">Haziq Ruslan</span>
+      <nav aria-label="Footer"><a href="#work">Work</a><a href="#about">About</a><a href="#looks">Looks</a><a href="#session">Sessions</a><a href="#book">Book</a></nav>
+    </div>
+    <div class="legal"><span>© 2026 Haziq Ruslan Photography</span><span>Shot on Canon EOS M6 &amp; Sony a6000</span></div>
+  </footer>
+</main>
+
+<div class="dock" id="dock" aria-hidden="true"></div>
+
+<div class="gal" id="gal" role="dialog" aria-modal="true" aria-labelledby="galTitle" hidden>
+  <div class="gal-bar">
+    <button type="button" class="back" id="galBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg>Back</button>
+    <span class="cap">Haziq Ruslan</span>
+  </div>
+  <div class="gal-head">
+    <span class="chip">Gallery</span>
+    <h2 class="cap" id="galTitle"></h2>
+    <p id="galNote"></p>
+  </div>
+  <div class="gal-grid" id="galGrid"></div>
+  <div class="gal-foot">
+    <button type="button" class="next" id="galNext"><span><small>Next gallery</small><span class="cap" id="galNextName"></span></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></button>
+    <a class="btn gold" href="#book" id="galBook">Book convocation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></a>
+  </div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="lb-top"><span class="cap" id="lbCount"></span>
+    <button type="button" class="sq" id="lbClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+  <div class="lb-stage" id="lbStage">
+    <button type="button" class="sq side prev" data-step="-1" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg></button>
+    <img id="lbImg" alt="">
+    <button type="button" class="sq side next" data-step="1" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></button>
+  </div>
+  <div class="lb-cap">
+    <span class="cap" id="lbCap"></span>
+    <div class="lb-ctrl">
+      <button type="button" class="sq" data-step="-1" aria-label="Previous photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="sq" data-step="1" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg></button>
+    </div>
+    <code id="lbExif"></code>
+  </div>
+</div>
+
+<script>
+/* Fill these in and republish.
+   whatsapp: number with country code, e.g. "60123456789"   instagram: handle without @   email: address
+   Empty values show as "Coming soon" and their buttons stay hidden. */
+const CONTACT = { whatsapp: "", instagram: "", email: "", based: "Shah Alam, Selangor" };
+
+const CATS = { convo: "Convocation", portrait: "Portraits", moments: "Moments" };
+const M6 = "Canon EOS M6", A6 = "Sony a6000";
+// id, category, title, alt, w, h, camera, focal mm, f, shutter (s), ISO
+const PHOTOS = [
+  ["p20","convo","Flowers and all","Graduate in a red robe holding a scroll and bouquets beside a friend on campus",900,1600,A6,19,6.3,0.002,200],
+  ["p18","convo","Before names are called","Rows of graduates in red robes and mortarboards in the convocation hall",1600,900,A6,98,6.3,0.04,2000],
+  ["p15","portrait","Caught mid-laugh","Young man in a black tee laughing, palm trees behind him",898,1600,M6,37,5.6,0.003125,500],
+  ["p19","convo","Scrolls up","Seated graduates holding up their scroll folders",1600,900,A6,95,6.3,0.04,2000],
+  ["p13","portrait","The bride's side","Bride in white standing with a relative in front of a floral backdrop",1067,1600,M6,30,5.0,0.01,2000],
+  ["p04","moments","Above the clouds","Hiker with arms wide on a ridge above a sea of clouds",1067,1600,M6,31,5.0,0.0015625,800],
+  ["p08","portrait","After dark","Woman in a cream hijab smiling against a dark railing at night",1600,1067,M6,15,6.3,0.04,200],
+  ["p14","portrait","On the branch","Woman in a pink hijab sitting on a low tree branch over the sea",1600,898,M6,45,6.3,0.002,125],
+  ["p12","moments","Three in the shallows","Three friends posing knee-deep in clear water",1067,1600,M6,20,6.3,0.0005,100],
+  ["p17","portrait","Helmet on","Man in a helmet and white shirt on a scooter by the water",1600,900,"",null,null,null,null],
+  ["p10","portrait","Sandbar walk","Woman in sunglasses walking on a white-sand beach under a blue sky",1067,1600,M6,28,6.3,0.0008,100],
+  ["p07","portrait","Slow shutter, on purpose","Smiling woman with light trails swirling around her",1600,1067,"",null,null,null,null],
+  ["p09","moments","Golden hour peace sign","Man from behind throwing a peace sign on a street at sunset",898,1600,M6,39,5.6,0.00625,3200],
+  ["p06","portrait","Making a heart","Two friends making a heart shape with their arms by a flowering bush",1067,1600,M6,30,5.0,0.002,200],
+  ["p11","portrait","Island afternoon","Man in an open shirt on the beach with hills behind",1067,1600,M6,27,6.3,0.00125,100],
+  ["p03","moments","Cold at the top","Hiker in a cap hugging himself on a misty ridge",1600,1067,M6,45,6.3,0.002,6400],
+  ["p16","moments","Looking out to sea","Young man in a cap looking over the sea from a rocky cliff",1067,1600,M6,24,7.1,0.0015625,125],
+  ["p02","moments","Made it up","Two hikers posing on a rocky trail on a green hillside",1600,1067,M6,45,6.3,0.002,6400],
+  ["p05","moments","The trail down","Hiker walking down a grassy ridge path",1067,1600,M6,34,5.0,0.0015625,1250],
+  ["p01","moments","Summit pose","Hiker posing on rocks with the hillside behind",1600,1067,M6,45,6.3,0.002,6400]
+].map(([id,cat,cap,alt,w,h,cam,fl,f,s,iso]) => ({id,cat,cap,alt,w,h,cam,fl,f,s,iso}));
+const byId = Object.fromEntries(PHOTOS.map(p => [p.id, p]));
+// galleries opened from the word list: slug (used as #link), name, thumbnail, photos, one-line note
+const GALS = [
+  ["convocation","Convocation","p20",["p20","p18","p19"],"In the hall and right after. Robes, scrolls and a lot of flowers."],
+  ["portraits","Portraits","p15",["p15","p17","p08","p14","p10","p11","p07"],"One person, one moment. Mostly natural light."],
+  ["events","Events","p13",["p13","p18","p19","p20"],"Weddings and ceremonies, shot without getting in the way."],
+  ["friends","Friends","p12",["p12","p06","p02","p01","p20"],"The people who show up for you, being themselves."],
+  ["candids","Candids","p07",["p07","p15","p09","p08","p06","p12"],"Nobody was told to smile. These just happened."],
+  ["golden-hour","Golden hour","p09",["p09","p14","p15","p17"],"Shot in the last hour of daylight, when everything goes warm."],
+  ["outdoors","Outdoors","p04",["p04","p03","p05","p16","p10","p11","p02","p01"],"Hikes, islands and sunrise ridges."]
+].map(([slug,name,thumb,ids,note]) => ({slug,name,thumb,ids,note}));
+
+const $ = id => document.getElementById(id);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7"/></svg>';
+const shutter = s => s >= 1 ? s + " s" : "1/" + Math.round(1 / s) + " s";
+const exif = p => p.cam ? [p.cam, p.fl + " mm", "f/" + p.f, shutter(p.s), "ISO " + p.iso].join("  ·  ") : "";
+
+/* ---------- scroll reveals: only elements below the fold get hidden, then revealed ---------- */
+const io = ("IntersectionObserver" in window && !reduce) ? new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.remove("arm"); io.unobserve(e.target); }
+}), { rootMargin: "0px 0px -12% 0px", threshold: 0.01 }) : null;
+function arm(el){
+  if (!io) return;
+  if (el.getBoundingClientRect().top < innerHeight * 0.9) return;
+  el.classList.add("arm"); io.observe(el);
+}
+function split(el){
+  let i = 0;
+  const walk = n => [...n.childNodes].forEach(c => {
+    if (c.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      c.textContent.split(/(\s+)/).forEach(t => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) { frag.append(t); return; }
+        const m = document.createElement("span"), s = document.createElement("span");
+        m.className = "m"; s.style.setProperty("--i", i++); s.textContent = t; m.append(s); frag.append(m);
+      });
+      c.replaceWith(frag);
+    } else if (c.nodeType === 1 && c.tagName !== "BR") walk(c);
+  });
+  walk(el);
+}
+
+/* ---------- hero strip (duplicated set for an endless loop) ---------- */
+const STRIP = ["p20","p18","p15","p14","p19","p13","p10","p08"];
+const stripHTML = (dup) => STRIP.map(id => { const p = byId[id];
+  return `<button type="button" data-open="${id}" ${dup ? 'tabindex="-1" aria-hidden="true"' : `aria-label="Open photo: ${p.cap}"`}><img src="img/${id}.jpg" width="${p.w}" height="${p.h}" alt="${dup ? "" : p.alt}"></button>`; }).join("");
+$("track").innerHTML = stripHTML(false) + stripHTML(true);
+
+/* ---------- word list → gallery pages ---------- */
+$("wordList").innerHTML = GALS.map(g => `
+  <li class="rv"><button type="button" class="w" data-gal="${g.slug}" aria-label="Open the ${g.name} gallery, ${g.ids.length} photos">${g.name}<sup>${g.ids.length}</sup></button>
+  <span class="th"><img src="img/${g.thumb}.jpg" alt=""></span></li>`).join("");
+
+let visible = PHOTOS, galOpen = null, galPushed = false, galReturn = null;
+const gal = $("gal");
+function renderGal(g){
+  $("galTitle").innerHTML = `${g.name}<sup>${g.ids.length}</sup>`;
+  split($("galTitle"));
+  $("galNote").textContent = g.note;
+  visible = g.ids.map(id => byId[id]);
+  $("galGrid").innerHTML = visible.map((p, i) => `
+    <figure class="gi" style="--i:${i}"><button type="button" data-open="${p.id}" aria-label="Open photo: ${p.cap}">
+      <img src="img/${p.id}.jpg" width="${p.w}" height="${p.h}" alt="${p.alt}"></button><span class="t">${p.cap}</span></figure>`).join("");
+  const nx = GALS[(GALS.indexOf(g) + 1) % GALS.length];
+  $("galNextName").textContent = nx.name; $("galNext").dataset.gal = nx.slug;
+  gal.scrollTop = 0;
+}
+function openGal(slug, push){
+  const g = GALS.find(x => x.slug === slug); if (!g) return;
+  if (!galOpen) galReturn = document.activeElement;
+  gal.classList.remove("open"); gal.hidden = false;
+  renderGal(g); void gal.offsetWidth; gal.classList.add("open");
+  galOpen = g; document.body.classList.add("gal-on"); document.body.style.overflow = "hidden";
+  if (push) { try { history.pushState({ gal: slug }, "", "#" + slug); galPushed = true; } catch (_) { galPushed = false; } }
+  $("galBack").focus({ preventScroll: true });
+}
+function closeGal(){
+  if (!galOpen) return;
+  galOpen = null; visible = PHOTOS; galPushed = false;
+  gal.classList.remove("open"); document.body.classList.remove("gal-on"); document.body.style.overflow = "";
+  setTimeout(() => { if (!galOpen) gal.hidden = true; }, 600);
+  if (galReturn) galReturn.focus({ preventScroll: true });
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-gal]"); if (!b) return;
+  if (b.id === "galNext") { const was = galPushed; openGal(b.dataset.gal, false); try { history.replaceState({ gal: b.dataset.gal }, "", "#" + b.dataset.gal); } catch (_) {} galPushed = was; }
+  else openGal(b.dataset.gal, true);
+});
+$("galBack").addEventListener("click", () => { if (galPushed) { try { history.back(); return; } catch (_) {} } closeGal(); try { history.replaceState(null, "", location.pathname + location.search); } catch (_) {} });
+$("galBook").addEventListener("click", e => { e.preventDefault(); $("galBack").click(); setTimeout(() => $("book").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }), 450); });
+addEventListener("popstate", e => { const slug = (e.state && e.state.gal) || location.hash.slice(1); if (GALS.some(g => g.slug === slug)) openGal(slug, false); else closeGal(); });
+// swipe right from the left edge to go back, like a phone page
+let gx = null, gy = null;
+gal.addEventListener("touchstart", e => { const t = e.touches[0]; if (t.clientX < 40) { gx = t.clientX; gy = t.clientY; } }, { passive: true });
+gal.addEventListener("touchend", e => { if (gx === null) return; const t = e.changedTouches[0]; if (t.clientX - gx > 80 && Math.abs(t.clientY - gy) < 60) $("galBack").click(); gx = null; });
+
+/* ---------- lightbox ---------- */
+let list = PHOTOS, idx = 0, lastFocus = null;
+function show(){
+  const p = list[idx], img = $("lbImg");
+  img.style.animation = "none"; void img.offsetWidth; img.style.animation = "";
+  img.src = "img/" + p.id + ".jpg"; img.alt = p.alt;
+  $("lbCap").textContent = p.cap; $("lbExif").textContent = exif(p);
+  $("lbCount").textContent = String(idx + 1).padStart(2, "0") + " / " + String(list.length).padStart(2, "0") + "  " + (galOpen ? galOpen.name : CATS[p.cat]);
+}
+function open(id){
+  list = galOpen && visible.some(p => p.id === id) ? visible : PHOTOS;
+  idx = list.findIndex(p => p.id === id);
+  lastFocus = document.activeElement;
+  $("lb").hidden = false; document.body.style.overflow = "hidden"; show(); $("lbClose").focus();
+}
+function close(){ $("lb").hidden = true; document.body.style.overflow = galOpen ? "hidden" : ""; lastFocus && lastFocus.focus(); }
+const step = d => { idx = (idx + d + list.length) % list.length; show(); };
+document.addEventListener("click", e => {
+  const s = e.target.closest("[data-step]"); if (s) { step(+s.dataset.step); return; }
+  const b = e.target.closest("[data-open]"); if (b) open(b.dataset.open);
+});
+$("lbClose").onclick = close;
+$("lbStage").addEventListener("click", e => { if (e.target === $("lbStage")) close(); });
+document.addEventListener("keydown", e => {
+  if ($("lb").hidden) { if (e.key === "Escape" && galOpen) $("galBack").click(); return; }
+  if (e.key === "Escape") close(); else if (e.key === "ArrowLeft") step(-1); else if (e.key === "ArrowRight") step(1);
+});
+let tx = null, ty = null;
+$("lbStage").addEventListener("touchstart", e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+$("lbStage").addEventListener("touchend", e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+  else if (dy > 90) close();
+  tx = ty = null;
+});
+
+/* ---------- contact: tap-to-chat buttons, copyable rows, bottom dock ---------- */
+const wa = CONTACT.whatsapp.replace(/\D/g, ""), ig = CONTACT.instagram.replace(/^@/, "");
+let picked = null; // editing style the visitor chose in "Pick your look"
+const waLinkFor = () => wa ? `https://wa.me/${wa}?text=${encodeURIComponent(
+  "Hi Haziq, I'd like to book a convocation session." + (picked ? ` I like the "${picked}" editing style.` : ""))}` : "";
+const igLink = ig ? `https://instagram.com/${encodeURIComponent(ig)}` : "";
+function renderTap(){
+  const waLink = waLinkFor();
+  $("tap").innerHTML =
+    (picked ? `<span class="picked">Your look: ${picked}</span>` : "") +
+    (waLink ? `<a class="btn gold" href="${waLink}" target="_blank" rel="noopener">Chat on WhatsApp ${ARROW}</a>` : "") +
+    (igLink ? `<a class="btn inv" href="${igLink}" target="_blank" rel="noopener">DM on Instagram ${ARROW}</a>` : "");
+  const d = $("dock"); const on = d.classList.contains("show");
+  d.innerHTML = waLink
+    ? `<a class="btn gold" href="${waLink}" target="_blank" rel="noopener" tabindex="${on ? 0 : -1}">Book on WhatsApp ${ARROW}</a>`
+    : `<a class="btn gold" href="#book" tabindex="${on ? 0 : -1}">Book convocation ${ARROW}</a>`;
+  const cta = $("lookCta");
+  if (cta) { cta.href = waLink || "#book"; if (waLink) { cta.target = "_blank"; cta.rel = "noopener"; } }
+}
+const rows = [["WhatsApp", wa ? "+" + wa : ""], ["Instagram", ig ? "@" + ig : ""], ["Email", CONTACT.email], ["Based in", CONTACT.based]];
+$("rows").innerHTML = rows.map(([k, v], i) => `
+  <div class="row"><span class="k cap">${k}</span>
+  <span class="v${v ? "" : " pending"}">${v ? `<span id="rv${i}">${v}</span>${k !== "Based in" ? `<button type="button" class="copy" data-copy="rv${i}">Copy</button>` : ""}` : "Coming soon"}</span></div>`).join("");
+$("rows").addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]"); if (!b) return;
+  const el = $(b.dataset.copy), text = el.textContent;
+  const done = ok => { b.textContent = ok ? "Copied" : "Select"; setTimeout(() => b.textContent = "Copy", 1600); };
+  const select = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done(false); };
+  try { navigator.clipboard.writeText(text).then(() => done(true), select); } catch { select(); }
+});
+
+const dock = $("dock");
+renderTap();
+if ("IntersectionObserver" in window) {
+  const seen = { top: true, book: false };
+  const dio = new IntersectionObserver(es => {
+    es.forEach(e => seen[e.target.id] = e.isIntersecting);
+    const on = !seen.top && !seen.book;
+    dock.classList.toggle("show", on);
+    dock.setAttribute("aria-hidden", String(!on));
+    dock.querySelectorAll("a").forEach(a => a.tabIndex = on ? 0 : -1);
+  }, { threshold: 0.12 });
+  dio.observe($("top")); dio.observe($("book"));
+}
+
+/* ---------- pick your look: one photo, several edits, before/after slider ---------- */
+const LOOKS = [
+  ["daydream", "Daydream", "Warm, hazy and soft. It looks like how the day felt, not just how it looked.", "Dreamy edit"],
+  ["moviestill", "Movie Still", "Rich contrast and warm, golden greens. Your graduation, framed like a scene from a film.", "Cinematic edit"],
+  ["filmdays", "Film Days", "Muted greens, deep blues and gentle film-style colour. Calm and a little nostalgic.", "Film edit"],
+  ["pictureperfect", "Picture Perfect", "Bright, clean and kind to skin tones. Faces look their best and colours stay natural.", "Portrait edit"],
+  ["crispbold", "Crisp & Bold", "Deeper shadows, punchy detail and strong colour. Robes, scrolls and flowers really pop.", "Sharp edit"],
+  ["timeless", "Timeless", "Classic black and white with strong contrast. Made for a frame on your parents' wall.", "Black & white edit"],
+  ["natural", "As Shot", "Straight out of the camera, no editing. Compare it with any style above.", "Unedited"]
+];
+const cmp = $("cmp"), after = $("cmpAfter"), range = $("cmpRange");
+let lookIdx = 0;
+$("swatches").innerHTML = LOOKS.map(([k, n], i) => `
+  <button type="button" class="sw" data-look="${i}" aria-pressed="${i === 0}">
+    <span class="im"><img src="img/look-${k}.jpg" alt="" loading="lazy"></span><span class="nm">${n}</span></button>`).join("");
+function setPos(p){ p = Math.max(0, Math.min(100, p)); cmp.style.setProperty("--pos", p + "%"); range.value = Math.round(p); }
+function setLook(i, user){
+  lookIdx = i; const [k, n, d, kind] = LOOKS[i];
+  after.src = `img/look-${k}.jpg`; after.alt = `The same photo in the ${n} style`;
+  after.classList.remove("swap"); void after.offsetWidth; after.classList.add("swap");
+  $("cmpTag").textContent = n; $("lookName").textContent = n; $("lookDesc").textContent = d; $("lookKind").textContent = kind;
+  cmp.classList.toggle("same", k === "natural");
+  if (k === "natural") setPos(0);
+  else if (parseFloat(getComputedStyle(cmp).getPropertyValue("--pos")) < 8) setPos(50);
+  $("swatches").querySelectorAll(".sw").forEach((b, j) => b.setAttribute("aria-pressed", String(j === i)));
+  $("lookCta").firstChild.textContent = k === "natural" ? "Book with natural colour " : `Book with ${n} `;
+  if (user) { picked = n; renderTap(); }
+}
+$("swatches").addEventListener("click", e => { const b = e.target.closest("[data-look]"); if (b) setLook(+b.dataset.look, true); });
+$("lookCta").addEventListener("click", () => { picked = LOOKS[lookIdx][1]; renderTap(); });
+// drag to compare (horizontal drag only; vertical swipes still scroll the page)
+let drag = null;
+const posFrom = x => { const r = cmp.getBoundingClientRect(); return (x - r.left) / r.width * 100; };
+cmp.addEventListener("pointerdown", e => {
+  if (cmp.classList.contains("same")) return;
+  drag = { x: e.clientX, y: e.clientY, on: e.pointerType === "mouse" };
+  if (drag.on) { setPos(posFrom(e.clientX)); cmp.setPointerCapture(e.pointerId); }
+});
+cmp.addEventListener("pointermove", e => {
+  if (!drag) return;
+  if (!drag.on) {
+    const dx = Math.abs(e.clientX - drag.x), dy = Math.abs(e.clientY - drag.y);
+    if (dy > dx && dy > 8) { drag = null; return; }
+    if (dx > 6) { drag.on = true; cmp.setPointerCapture(e.pointerId); }
+  }
+  if (drag && drag.on) setPos(posFrom(e.clientX));
+});
+["pointerup", "pointercancel"].forEach(t => cmp.addEventListener(t, e => {
+  if (drag && !drag.on && e.type === "pointerup" && !cmp.classList.contains("same")) setPos(posFrom(e.clientX)); // tap to jump
+  drag = null;
+}));
+range.addEventListener("input", () => setPos(+range.value));
+// one-time sweep when the photo scrolls into view, so visitors see it's draggable
+if ("IntersectionObserver" in window && !reduce) {
+  const sio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; sio.disconnect();
+    const t0 = performance.now(), path = [[0, 50], [600, 82], [1300, 22], [1900, 50]];
+    const tick = t => {
+      const dt = t - t0; let i = 1; while (i < path.length - 1 && dt > path[i][0]) i++;
+      const [ta, pa] = path[i - 1], [tb, pb] = path[i], k = Math.min(1, Math.max(0, (dt - ta) / (tb - ta)));
+      if (drag) return;
+      setPos(pa + (pb - pa) * (0.5 - Math.cos(Math.PI * k) / 2));
+      if (dt < path[path.length - 1][0]) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }), { threshold: 0.5 });
+  sio.observe(cmp);
+}
+setLook(0, false);
+
+/* ---------- boot ---------- */
+document.querySelectorAll(".sp").forEach(el => { split(el); arm(el); });
+document.querySelectorAll(".rv").forEach(arm);
+{ const h = location.hash.slice(1); if (GALS.some(g => g.slug === h)) openGal(h, false); }
+</script>
+</body>
+</html>
